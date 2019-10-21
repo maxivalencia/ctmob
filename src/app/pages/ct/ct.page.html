@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <!-- <ion-img [src]="assets/icon/favicon.png"></ion-img> --><ion-title><img src="assets/icon/logo.ico" width="40px"> Contrôle Technique</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+ 
+  <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="prm()"></ion-searchbar>
+  <!-- <ion-button color="primary" full (click)="reload()">Chercher</ion-button> -->
+  <ion-button color="primary" full (click)="searchChanged()">Chercher</ion-button>
+ 
+  <ion-list>
+ 
+    <ion-item *ngFor="let item of resultat; let i = index; let isEven = even; let isOdd = odd;">
+      <ion-label class="ion-text-wrap">
+        <div ngClass="{{ isEven ? 'class-blue' : 'class-white' }}">{{ item }}</div>
+      </ion-label>      
+    </ion-item>
+ 
+  </ion-list>
+ 
+</ion-content>

@@ -1,0 +1,7 @@
+{
+  "name": "ctmob",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
