@@ -5,11 +5,12 @@
 </ion-header>
 
 <ion-content>
- 
+  <div class="ion-text-center"><ion-label><strong>Veuillez entrer ici le numéro d'immatriculation : </strong></ion-label></div>
   <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="prm()"></ion-searchbar>
   <!-- <ion-button color="primary" full (click)="reload()">Chercher</ion-button> -->
-  <ion-button color="primary" full (click)="searchChanged()">Chercher</ion-button>
- 
+  <div class="ion-text-center">
+    <strong>Cliquer sur ce bouton pour lancer la recherche</strong><ion-button color="primary" full (click)="searchChanged()">Chercher</ion-button>
+  </div>
   <ion-list>
  
     <ion-item *ngFor="let item of resultat; let i = index; let isEven = even; let isOdd = odd;">
