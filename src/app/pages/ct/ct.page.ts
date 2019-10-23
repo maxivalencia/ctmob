@@ -97,7 +97,7 @@ export class CtPage implements OnInit {
 
   // fonction inutile mais seulement pour onchange
   prm(){
-
+    // seule utilisation : garder la fonction onchange de l'input car l'application bug sans cette fonction
   }
 
   doRefresh(event) {
@@ -113,7 +113,6 @@ export class CtPage implements OnInit {
     this.remiseZero();
     this.resultat = [];      
     this.storage.set('erreur' , "192.168.88.254");
-    //this.url = 'http://' + adresse + ':2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
     this.http.get('http://154.126.79.185:2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm).subscribe(data => {
       if (data){
         this.storage.set('erreur' , "154.126.79.185");
@@ -124,8 +123,6 @@ export class CtPage implements OnInit {
     this.storage.get('erreur').then((val) => {
       this.url = 'http://' + val + ':2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
     });
-    //this.url1 = 'http://192.168.88.254:2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
-    //this.url = 'http://154.126.79.185:2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
     this.http.get(this.url).subscribe(data => {
       if (data[0]["cg_immatriculation"] != ""){
         this.remiseZero();
@@ -190,78 +187,8 @@ export class CtPage implements OnInit {
         this.storage.set('Aptitude_nom' , "Aptitude :");
         this.storage.set('Aptitude' , data[0]["vst_is_apte"]);
         this.storage.set('Contre_nom' , "Type de visite :");
-        this.storage.set('Contre' , data[0]["vst_is_contre_visite"]);      
-        //this.storage.set('erreur' , "non");
-      }
-      /* this.http.get(this.url2).subscribe(data => {
-        if (data[0]["cg_immatriculation"] != ""){
-          this.remiseZero();
-          this.storage.set('Immatriculation_nom' , "Numéro Immatriculation :");
-          this.storage.set('Immatriculation' , data[0]["cg_immatriculation"]);
-          this.storage.set('Proprietaire_nom' , "Nom propriétaire :");
-          this.storage.set('Proprietaire' , data[0]["cg_nom"]+' '+data[0]["cg_prenom"]);
-          this.storage.set('Profession_nom' , "Profession :");
-          this.storage.set('Profession' , data[0]["cg_profession"]);
-          this.storage.set('Adresse_nom' , "Adresse :");
-          this.storage.set('Adresse' , data[0]["cg_adresse"]+' '+data[0]["cg_commune"]);
-          this.storage.set('MiseService_nom' , "Mise en service :");
-          this.storage.set('MiseService' , data[0]["cg_mise_en_service"]);
-          this.storage.set('CarteViolette_nom' , "Carte violette :");
-          this.storage.set('CarteViolette' , data[0]["cg_num_carte_violette"]+' '+data[0]["cg_date_carte_violette"]);
-          this.storage.set('Vignette_nom' , "Vignette :");
-          this.storage.set('Vignette' , data[0]["cg_num_vignette"]+' '+data[0]["cg_date_vignette"]);
-          this.storage.set('NbPlaceAssise_nom' , "Nombre de place :");
-          this.storage.set('NbPlaceAssise' , data[0]["cg_nbr_assis"]);
-          this.storage.set('NbDebout_nom' , "Débout :");
-          this.storage.set('NbDebout' , data[0]["cg_nbr_debout"]);
-          this.storage.set('Cooperative_nom' , "Coopérative :");
-          this.storage.set('Cooperative' , data[0]["cg_nom_cooperative"]);
-          this.storage.set('Patente_nom' , "Patence :");
-          this.storage.set('Patente' , data[0]["cg_patente"]);
-          this.storage.set('Puissance_nom' , "Puissance :");
-          this.storage.set('Puissance' , data[0]["cg_puissance_admin"]);
-          this.storage.set('Carosserie_nom' , "Carosserie :");
-          this.storage.set('Carosserie' , data[0]["crs_libelle"]);
-          this.storage.set('Marque_nom' , "Marque :");
-          this.storage.set('Marque' , data[0]["mrq_libelle"]);
-          this.storage.set('Type_nom' , "Type :");
-          this.storage.set('Type' , data[0]["vhc_type"]);
-          this.storage.set('Energie_nom' , "Energie :");
-          this.storage.set('Energie' , data[0]["sre_libelle"]);
-          this.storage.set('Moteur_nom' , "Moteur :");
-          this.storage.set('Moteur' , data[0]["vhc_num_moteur"]);
-          this.storage.set('NumeroSerie_nom' , "Numéro de série :");
-          this.storage.set('NumeroSerie' , data[0]["vhc_num_serie"]);
-          this.storage.set('Usage_nom' , "Usage :");
-          this.storage.set('Usage' , data[0]["usg_libelle"]);
-          this.storage.set('ChargeUtile_nom' , "Charge utile :");
-          this.storage.set('ChargeUtile' , data[0]["vhc_charge_utile"]);
-          this.storage.set('PoidsTotalCharge_nom' , "Poids total à charge :");
-          this.storage.set('PoidsTotalCharge' , data[0]["vhc_poids_total_charge"]);
-          this.storage.set('PoidsVide_nom' , "Poids à vide :");
-          this.storage.set('PoidsVide' , data[0]["vhc_poids_vide"]);
-          this.storage.set('Centre_nom' , "Centre :");
-          this.storage.set('Centre' , data[0]["ctr_nom"]);
-          this.storage.set('Province_nom' , "Province :");
-          this.storage.set('Province' , data[0]["prv_nom"]);
-          this.storage.set('Verificateur_nom' , "Vérificateur :");
-          this.storage.set('Verificateur' , data[0]["nom_verificateur"]);
-          this.storage.set('Secretaire_nom' , "Secrétaire :");
-          this.storage.set('Secretaire' , data[0]["usr_name"]);
-          this.storage.set('NumPV_nom' , "Numéro PV :");
-          this.storage.set('NumPV' , data[0]["vst_num_pv"]);
-          this.storage.set('DateVisite_nom' , "Date de visite :");
-          this.storage.set('DateVisite' , data[0]["vst_created"]);
-          this.storage.set('Expiration_nom' , "Expiration :");
-          this.storage.set('Expiration' , data[0]["vst_date_expiration"]);
-          this.storage.set('Aptitude_nom' , "Aptitude :");
-          this.storage.set('Aptitude' , data[0]["vst_is_apte"]);
-          this.storage.set('Contre_nom' , "Type de visite :");
-          this.storage.set('Contre' , data[0]["vst_is_contre_visite"]);      
-          this.storage.set('erreur' , "non");
-        }          
-      }); */
-    
+        this.storage.set('Contre' , data[0]["vst_is_contre_visite"]);
+      }    
     });
     this.storage.get('Immatriculation_nom').then((val) => {
       this.resultat.push(val);
