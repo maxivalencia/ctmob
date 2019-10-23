@@ -8,6 +8,9 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 import { Storage } from '@ionic/storage';
 import { key } from 'localforage';
+import { DatePipe } from '@angular/common';
+//import Moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ct',
@@ -35,8 +38,10 @@ export class CtPage implements OnInit {
   theTodo : any;
   resultat : Array<string>  = new Array<string>();
   adresse: string = "";
+  datepipe: any;
+  date: any;
 
-  constructor(private ctService: CtService, private http: HttpClient, private storage: Storage) {
+  constructor(private ctService: CtService, private http: HttpClient, private storage: Storage, datepipe: DatePipe) {
     //this.datacharge();
     //this.storage.set('erreur' , "oui");
   }
@@ -181,6 +186,11 @@ export class CtPage implements OnInit {
         this.storage.set('NumPV_nom' , "Numéro PV :");
         this.storage.set('NumPV' , data[0]["vst_num_pv"]);
         this.storage.set('DateVisite_nom' , "Date de visite :");
+        let dateString = "22-04-2017"; //whatever date string u have
+        let dateObject = moment(dateString, "DD-MM-YYYY").toDate();
+        this.date = this.datepipe.transform(data[0]["vst_created"], 'yyyy-MM-dd');
+        console.log(this.date);
+        //this.storage.set('DateVisite' , this.date);
         this.storage.set('DateVisite' , data[0]["vst_created"]);
         this.storage.set('Expiration_nom' , "Expiration :");
         this.storage.set('Expiration' , data[0]["vst_date_expiration"]);
