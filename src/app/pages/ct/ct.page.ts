@@ -52,7 +52,7 @@ export class CtPage implements OnInit {
 
   dismiss(){
     //cordova.plugins.exit();
-    navigator.app.exitApp();
+    //navigator.app.exitApp();
   }
 
   ngOnInit() {
