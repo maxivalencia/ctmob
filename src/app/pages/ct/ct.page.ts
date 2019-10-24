@@ -50,6 +50,11 @@ export class CtPage implements OnInit {
     this.storage.set('erreur' , "oui");
   }
 
+  dismiss(){
+    //cordova.plugins.exit();
+    navigator.app.exitApp();
+  }
+
   ngOnInit() {
     //this.datacharge();
   }
@@ -201,7 +206,7 @@ export class CtPage implements OnInit {
         this.date = new Date(data[0]["vst_date_expiration"]).toLocaleDateString();
         this.storage.set('Expiration' , this.date);
         this.storage.set('Aptitude_nom' , "Aptitude :");
-        this.storage.set('Aptitude' , data[0]["vst_is_apte"]);
+        this.storage.set('Aptitude' , data[0]["vst_is_apte"] + ', anomalie :' + data[0]["vst_anomalies"]);
         this.storage.set('Contre_nom' , "Type de visite :");
         this.storage.set('Contre' , data[0]["vst_is_contre_visite"]);
         this.storage.set('erreur' , "non");
