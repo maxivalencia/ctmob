@@ -10,6 +10,10 @@ import { Storage } from '@ionic/storage';
 import { key } from 'localforage';
 import { DatePipe } from '@angular/common';
 //import Moment from 'moment';
+import 'rxjs/add/operator/retry';
+import 'rxjs/add/operator/timeout';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 
 @Component({
@@ -43,7 +47,7 @@ export class CtPage implements OnInit {
 
   constructor(private ctService: CtService, private http: HttpClient, private storage: Storage, datepipe: DatePipe) {
     //this.datacharge();
-    //this.storage.set('erreur' , "oui");
+    this.storage.set('erreur' , "oui");
   }
 
   ngOnInit() {
@@ -66,11 +70,12 @@ export class CtPage implements OnInit {
   }
  
   public async searchChanged() {
-    this.storage.set('erreur' , "oui");
+    //this.storage.set('erreur' , "oui");
     this.adresse = "";
     //this.remiseZero();
     this.datacharge("154.126.79.185");
-    /* this.storage.get('erreur').then((val) => {
+    //this.datacharge("192.168.88.254");
+    this.storage.get('erreur').then((val) => {
       this.adresse = val;
       //console.log(this.adresse);
     });
@@ -87,7 +92,7 @@ export class CtPage implements OnInit {
         this.storage.set('Immatriculation_nom' , "Numéro Immatriculation introuvable");
         this.storage.set('Immatriculation' , "n'exist pas encore dans la base");
       }
-    } */
+    }
     //this.storage.remove('erreur');
     //console.log("tonga eto");
     //this.reload(); 
@@ -117,7 +122,7 @@ export class CtPage implements OnInit {
   datacharge(adresse){
     this.remiseZero();
     this.resultat = [];      
-    this.storage.set('erreur' , "192.168.88.254");
+    /* this.storage.set('erreur' , "192.168.88.254");
     this.http.get('http://154.126.79.185:2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm).subscribe(data => {
       if (data){
         this.storage.set('erreur' , "154.126.79.185");
@@ -127,7 +132,8 @@ export class CtPage implements OnInit {
     });
     this.storage.get('erreur').then((val) => {
       this.url = 'http://' + val + ':2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
-    });
+    }); */
+    this.url = 'http://' + adresse + ':2053/index.php/controles_techniques/one_visite/?IMM=' + this.searchTerm;
     this.http.get(this.url).subscribe(data => {
       if (data[0]["cg_immatriculation"] != ""){
         this.remiseZero();
@@ -198,7 +204,10 @@ export class CtPage implements OnInit {
         this.storage.set('Aptitude' , data[0]["vst_is_apte"]);
         this.storage.set('Contre_nom' , "Type de visite :");
         this.storage.set('Contre' , data[0]["vst_is_contre_visite"]);
+        this.storage.set('erreur' , "non");
       }    
+    }),(err => {
+      this.storage.set('erreur', 'oui');
     });
     this.storage.get('Immatriculation_nom').then((val) => {
       this.resultat.push(val);
