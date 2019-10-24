@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage';
 import { key } from 'localforage';
 import { DatePipe } from '@angular/common';
 //import Moment from 'moment';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-ct',
@@ -38,7 +38,7 @@ export class CtPage implements OnInit {
   theTodo : any;
   resultat : Array<string>  = new Array<string>();
   adresse: string = "";
-  datepipe: any;
+  datepipe: DatePipe;
   date: any;
 
   constructor(private ctService: CtService, private http: HttpClient, private storage: Storage, datepipe: DatePipe) {
@@ -134,17 +134,20 @@ export class CtPage implements OnInit {
         this.storage.set('Immatriculation_nom' , "Numéro Immatriculation :");
         this.storage.set('Immatriculation' , data[0]["cg_immatriculation"]);
         this.storage.set('Proprietaire_nom' , "Nom propriétaire :");
-        this.storage.set('Proprietaire' , data[0]["cg_nom"]+' '+data[0]["cg_prenom"]);
+        this.storage.set('Proprietaire' , data[0]["cg_nom"] + ' ' + data[0]["cg_prenom"]);
         this.storage.set('Profession_nom' , "Profession :");
         this.storage.set('Profession' , data[0]["cg_profession"]);
         this.storage.set('Adresse_nom' , "Adresse :");
-        this.storage.set('Adresse' , data[0]["cg_adresse"]+' '+data[0]["cg_commune"]);
+        this.storage.set('Adresse' , data[0]["cg_adresse"] + ' ' + data[0]["cg_commune"]);
         this.storage.set('MiseService_nom' , "Mise en service :");
-        this.storage.set('MiseService' , data[0]["cg_mise_en_service"]);
+        this.date = new Date(data[0]["cg_mise_en_service"]).toLocaleDateString();
+        this.storage.set('MiseService' , this.date);
         this.storage.set('CarteViolette_nom' , "Carte violette :");
-        this.storage.set('CarteViolette' , data[0]["cg_num_carte_violette"]+' '+data[0]["cg_date_carte_violette"]);
+        this.date = new Date(data[0]["cg_date_carte_violette"]).toLocaleDateString();
+        this.storage.set('CarteViolette' , data[0]["cg_num_carte_violette"] + ' ' + this.date);
         this.storage.set('Vignette_nom' , "Vignette :");
-        this.storage.set('Vignette' , data[0]["cg_num_vignette"]+' '+data[0]["cg_date_vignette"]);
+        this.date = new Date(data[0]["cg_date_vignette"]).toLocaleDateString();
+        this.storage.set('Vignette' , data[0]["cg_num_vignette"] + ' ' + this.date);
         this.storage.set('NbPlaceAssise_nom' , "Nombre de place :");
         this.storage.set('NbPlaceAssise' , data[0]["cg_nbr_assis"]);
         this.storage.set('NbDebout_nom' , "Débout :");
@@ -186,14 +189,11 @@ export class CtPage implements OnInit {
         this.storage.set('NumPV_nom' , "Numéro PV :");
         this.storage.set('NumPV' , data[0]["vst_num_pv"]);
         this.storage.set('DateVisite_nom' , "Date de visite :");
-        let dateString = "22-04-2017"; //whatever date string u have
-        let dateObject = moment(dateString, "DD-MM-YYYY").toDate();
-        this.date = this.datepipe.transform(data[0]["vst_created"], 'yyyy-MM-dd');
-        console.log(this.date);
-        //this.storage.set('DateVisite' , this.date);
-        this.storage.set('DateVisite' , data[0]["vst_created"]);
+        this.date = new Date(data[0]["vst_created"]).toLocaleDateString();
+        this.storage.set('DateVisite' , this.date);
         this.storage.set('Expiration_nom' , "Expiration :");
-        this.storage.set('Expiration' , data[0]["vst_date_expiration"]);
+        this.date = new Date(data[0]["vst_date_expiration"]).toLocaleDateString();
+        this.storage.set('Expiration' , this.date);
         this.storage.set('Aptitude_nom' , "Aptitude :");
         this.storage.set('Aptitude' , data[0]["vst_is_apte"]);
         this.storage.set('Contre_nom' , "Type de visite :");
